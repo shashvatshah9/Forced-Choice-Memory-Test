@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<title>all the best</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+.mySlides {display:none;}
+</style>
+<body>
+
+
+<div class="w3-content w3-section" style="max-width:500px" align="center">
+  <img class="mySlides" src="test/1a.svg" style="width:100%">
+  <img class="mySlides" src="test/2a.svg" style="width:100%">
+  <img class="mySlides" src="test/3a.svg" style="width:100%">
+  <img class="mySlides" src="test/4a.svg" style="width:100%">
+  <img class="mySlides" src="test/5a.svg" style="width:100%">
+  <img class="mySlides" src="test/6a.svg" style="width:100%">
+  <img class="mySlides" src="test/7a.svg" style="width:100%">
+  <img class="mySlides" src="test/8a.svg" style="width:100%">
+  <img class="mySlides" src="test/9a.svg" style="width:100%">
+  <img class="mySlides" src="test/10a.svg" style="width:100%">
+  <img class="mySlides" src="test/11a.svg" style="width:100%">
+  <img class="mySlides" src="test/12a.svg" style="width:100%">
+  <img class="mySlides" src="test/13a.svg" style="width:100%">
+  <img class="mySlides" src="test/14a.svg" style="width:100%">
+  <img class="mySlides" src="test/15a.svg" style="width:100%">
+  <img class="mySlides" src="test/16a.svg" style="width:100%">
+  <img class="mySlides" src="test/17a.svg" style="width:100%">
+  <img class="mySlides" src="test/18a.svg" style="width:100%">
+  <img class="mySlides" src="test/19a.svg" style="width:100%">
+  <img class="mySlides" src="test/20a.svg" style="width:100%">
+</div>
+
+<script>
+var myIndex = 0;
+carousel();
+
+function carousel() {
+    var i;
+    var x = document.getElementsByClassName("mySlides");
+    for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";
+    }
+    myIndex++;
+    if (myIndex > x.length) {myIndex = -1}
+    x[myIndex-1].style.display = "block";
+    setTimeout(carousel, 3000); // Change image every 3 seconds
+}
+</script>
+
+</body>
+</html>
+

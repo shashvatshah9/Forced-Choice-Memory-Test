@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Select answers</title>
+</head>
+<body>
+	<center>
+		<p id='pan'></p>
+		<h2 id='disptime'></h2>
+		<div class="myimages" id="imagegrid">
+
+			<img style="width: 300px; height: 200px; margin-right: 10px; border: solid 3px;" src="" id='1' onclick="checkanswer(1)">
+			<img style="width: 300px; height: 200px; border: solid 3px;" src="" id='2' onclick="checkanswer(2)">
+			<img style="width: 300px; height: 200px; margin-right: 10px; border: solid 3px;" src="" id='3' onclick="checkanswer(3)">
+			<img style="width: 300px; height: 200px; border: solid 3px;" src="" id='4' onclick="checkanswer(4)"><br>
+			<img style="width: 300px; height: 200px; margin-right: 10px; border: solid 3px;" src="" id='5' onclick="checkanswer(5)">
+			<img style="width: 300px; height: 200px; border: solid 3px;" src="" id='6' onclick="checkanswer(6)">
+			<img style="width: 300px; height: 200px; margin-right: 10px; border: solid 3px;" src="" id='7' onclick="checkanswer(7)">
+			<img style="width: 300px; height: 200px; border: solid 3px;" src="" id='8' onclick="checkanswer(8)"><br><br>
+			
+		</div>
+	</center>
+</body>
+</html>
+<script type="text/javascript">
+		// time config
+		var perquesduration = 15000
+		//
+		let pageid="";
+		var ob,seconds=15;
+		var queslist, answerlist, t, index=0,attempt=[],timelist=[];
+		function setimages(){
+			let loc=window.location.href
+			let question = loc.split('/')
+			pageid = question[question.length-1]
+			console.log(pageid)
+
+			starttest()
+		}
+
+		function starttest(){
+			
+        	var request = new XMLHttpRequest();
+			var url = 'http://localhost:3000/api/question/'+pageid;
+			request.open('GET', url, true)
+			request.send()
+
+			request.onload = function(){
+				var ob = JSON.parse(request.responseText)
+				//console.log(ob)
+				questionlist = ob.questionlist
+				console.log(questionlist)	
+			}
+
+			var request1 = new XMLHttpRequest()
+			url1 = 'http://localhost:3000/api/answer/'+pageid
+			request1.open('GET', url1, true)
+			request1.send()
+			request1.onload = function(){
+				var ob = JSON.parse(request1.responseText)
+				//console.log(ob)
+				answerlist = ob.answer
+				console.log(answerlist)
+			}
+			// start the test 
+			sub()
+			t=setTimeout(setsrc,100)
+		}
+
+		function setsrc(){
+			// if(index== questionlist.length){
+			// 	clearTimeout(t)
+			// 	//giveresult()
+			// 	console.log(attempt)
+			// 	index=-FF
+			// }
+			// else{
+				seconds=15
+				for(var i=1;i<=8;i++){
+					var im = document.getElementById(i)
+					im.src = '../questions/'+pageid+'/'+questionlist[index]+'/'+i+'..svg'
+				}
+
+			//}
+			// 15 secs
+			timer(perquesduration)
+
+		}
+
+
+
+		function sub(){
+			seconds--;
+			document.getElementById('disptime').innerHTML = seconds;
+			smallcountdown();
+		}
+
+		function smallcountdown(){
+			t1=setTimeout(sub,1000)
+		}
+
+		function next(){
+			clearTimeout(t)
+			index++
+			if(index<questionlist.length){
+				setsrc();
+			}
+			else{
+				document.getElementById('imagegrid').style.visibility = 'hidden'
+				document.getElementById('disptime').style.visibility = 'hidden'
+				var output='<h3>The result of the test is</h3><br>'
+				for(var i=0;i<timelist.length;i++){
+					let temp=i+1
+					output+=temp+','+timelist[i]+','+attempt[i]+',<br>'
+				}
+				document.getElementById('pan').innerHTML = output
+				
+			}
+		}
+
+
+		function timer(time){
+			// if(index == questionlist.length-1){
+			// 	clearTimeout(t)
+			// 	return
+			// }
+			// else{
+				t=setTimeout(timefinish, time)
+			//}
+		}	
+
+		function timefinish(){
+			console.log("timeout")
+			var d = new Date()
+			console.log(d.getTime())
+
+			timelist.push(d.getTime())
+			attempt.push('-1')
+			next()
+		}
+
+		function checkanswer(answer){
+			console.log("checkanswer ")
+			var d = new Date()
+			console.log(d.getTime())
+			timelist.push(d.getTime())
+			console.log(questionlist[index]+" " +answerlist[index] + " answer "+ answer)
+			if(answerlist[index] == answer){
+				attempt.push('1')
+			}
+			else attempt.push('0')
+			next()
+		}
+
+		setimages();
+
+</script>

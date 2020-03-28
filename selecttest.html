@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select test</title>
+    <script type="text/javascript">
+        var videoList;
+        var url='http://localhost:3000/files'
+        var request = new XMLHttpRequest();
+        request.open('GET', url)
+        request.send()
+        request.onload=function(){
+            videoList=JSON.parse(request.responseText)
+            var linkset="";
+            //var vlist=videoList.filenamese
+            //console.log(videoList.filenames)
+            for(var i=0;i<videoList.filenames.length;i++){
+                linkset+="<a href='http://localhost:3000/questions/"+videoList.filenames[i] +"'>"+videoList.filenames[i]+"</a> <br>   ";
+            }
+            //console.log(linkset)
+            document.getElementById('links').innerHTML=linkset
+        }
+    </script>
+</head>
+<body>
+    <div id='links'>
+
+    </div>
+</body>
+</html>

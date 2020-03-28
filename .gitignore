@@ -1,0 +1,14 @@
+temp/
+node_modules/
+data/
+models/
+result/
+trained_models/
+questions/
+
+*.ipynb
+*.xls
+*.docx
+
+.DS_Store
+.ipynb_checkpoints/
