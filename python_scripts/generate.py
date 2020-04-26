@@ -1,7 +1,8 @@
 from glob import glob
 from random import sample, shuffle
 from shutil import copy
-from os import rename, mkdir
+import os
+from os import rename, mkdir, makedirs
 
 
 def generate_question(answer, remaining, D):
@@ -33,7 +34,9 @@ def generate_set(N, D):
     which is followed by N question, ansewer pairs having D distractors
     as described in generate_question() function
     '''
-    images = glob('images/*.svg')
+    base_path = os.path.abspath(os.path.join('..', 'Flags'))
+    images = glob(base_path + '/*.svg')
+    print('Number of images in Flags folder {0}'.format(len(images)))
     #Number of Images in the test
     NUM_IMAGES = N
 
@@ -55,33 +58,41 @@ def generate_files(test_id, N, D):
     Generates a test with a folder named ID having N question each with D+1 options
     Returns None
     '''
-    base_path = '/Users/Harshad/Desktop/flags/'
-    mkdir(base_path + str(test_id))
-    copy(base_path + 'Training Phase.html', base_path + str(test_id))
-    base_path = base_path + str(test_id)
-    mkdir(base_path + '/test')
+    base_path = os.path.abspath('..')
+    makedirs(os.path.join(base_path, 'questions', str(test_id), 'test'))
+    base_path = os.path.join(base_path, 'questions', str(test_id))
 
     ans = generate_set(N, D)
     for ele in ans[0]:
-        copy(ele, base_path + '/test')
+        copy(ele, os.path.join(base_path, 'test'))
 
     shuffle(ans[0])
-    for i in range(len(ans[0])):
-        rename(base_path + '/test' + ans[0][i][6:], base_path + '/test/' + str(i+1) + 'a.svg')
+
+    test_images = glob(base_path + '/test' + '/*.svg')
+    test_count = 1
+    for x in test_images:
+        rename(x, os.path.join(base_path, 'test', str(test_count) + 'a.svg'))
+        test_count = test_count + 1
 
     file = open(base_path + '/answers.txt', 'a')
 
     for i in range(1, len(ans)):
-        mkdir(base_path + '/' + str(i))
+        mkdir(os.path.join(base_path, str(i)))
         res = 1
-        cur_path = base_path + '/' + str(i)
+        cur_path = os.path.join(base_path, str(i))
         for ele in ans[i][0]:
             copy(ele, cur_path)
 
-        for j in range(len(ans[i][0])):
-            if(ans[i][0][j] == ans[i][1]):
+        test_questions = glob(cur_path + '/*.svg')
+        print('number of svg file in one question {0}'.format(len(test_questions)))
+        answer_name = ans[i][1].split('/')[-1]
+        j=0
+        for ques in test_questions:
+            if(ques.split('/')[-1] == answer_name):
                 res = j+1
-            rename(cur_path + ans[i][0][j][6:], cur_path + '/' + str(j+1) + '..svg')
+            print('{0} {1}'.format(ques, os.path.join(cur_path, str(j+1)+'.svg')))
+            rename(ques, os.path.join(cur_path, str(j+1) + '.svg'))
+            j = j+1
         file.write(str(res)+'\n')
     file.close()
 

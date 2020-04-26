@@ -1,5 +1,5 @@
 ## change the result file name here
-filename='result/bhavinee.csv'
+filename='result/*.csv'
 print("opening file ", filename)
 print('timestampMs,result')
 with open(filename, 'r') as f:
