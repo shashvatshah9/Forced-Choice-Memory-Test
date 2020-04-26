@@ -5,6 +5,7 @@ models/
 result/
 trained_models/
 questions/
+Flags/
 
 *.ipynb
 *.xls
