@@ -6,6 +6,6 @@ After you have downloaded the flags, you have to run
 ```shell
 python generate.py
 ```
-to create the folder <h6>questions</h6> to generate sets of randomly shuffled country images.
+to create the folder **questions** to generate sets of randomly shuffled country images.
 
-After this run <h6>node app.js</h6> on the root directory to start the test.
+After this run **node app.js** on the root directory to start the test.
